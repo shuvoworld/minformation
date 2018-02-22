@@ -18,7 +18,7 @@
          </div>
         </div>
         <div class="panel-body">
-          <table class="table table-bordered">
+          <table class="table table-bordered" id="example">
             <thead>
               <tr>
                 <th class="text-center" style="width: 50px;">#</th>
@@ -68,3 +68,8 @@
     </div>
   </div>
   <?php include_once('layouts/footer.php'); ?>
+  <script type="text/javascript">
+    $(document).ready(function() {
+    $('#example').DataTable();
+} );
+  </script>

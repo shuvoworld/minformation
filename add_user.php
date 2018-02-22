@@ -4,6 +4,7 @@
   // Checkin What level user has permission to view this page
   page_require_level(1);
   $groups = find_all('user_groups');
+  $agencies = find_all('agencies');
 ?>
 <?php
   if(isset($_POST['add_user'])){
@@ -16,11 +17,12 @@
        $username   = remove_junk($db->escape($_POST['username']));
        $password   = remove_junk($db->escape($_POST['password']));
        $user_level = (int)$db->escape($_POST['level']);
+       $agency_id = (int)$db->escape($_POST['agency_id']);
        $password = sha1($password);
         $query = "INSERT INTO users (";
-        $query .="name,username,password,user_level,status";
+        $query .="name,username,password,user_level,agency_id,status";
         $query .=") VALUES (";
-        $query .=" '{$name}', '{$username}', '{$password}', '{$user_level}','1'";
+        $query .=" '{$name}', '{$username}', '{$password}', '{$user_level}', '{$agency_id}','1'";
         $query .=")";
         if($db->query($query)){
           //sucess
@@ -61,6 +63,14 @@
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" name ="password"  placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="agency_id">Agency/Directorate</label>
+                <select class="form-control" name="agency_id">
+                  <?php foreach ($agencies as $agency ):?>
+                   <option value="<?php echo $agency['id'];?>"><?php echo $agency['name'];?></option>
+                <?php endforeach;?>
+                </select>
             </div>
             <div class="form-group">
               <label for="level">User Role</label>

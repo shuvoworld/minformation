@@ -7,6 +7,7 @@
 <?php
   $e_user = find_by_id('users',(int)$_GET['id']);
   $groups  = find_all('user_groups');
+  $agencies = find_all('agencies');
   if(!$e_user){
     $session->msg("d","Missing user id.");
     redirect('users.php');
@@ -23,8 +24,9 @@
            $name = remove_junk($db->escape($_POST['name']));
        $username = remove_junk($db->escape($_POST['username']));
           $level = (int)$db->escape($_POST['level']);
+          $agency_id = (int)$db->escape($_POST['agency_id']);
        $status   = remove_junk($db->escape($_POST['status']));
-            $sql = "UPDATE users SET name ='{$name}', username ='{$username}',user_level='{$level}',status='{$status}' WHERE id='{$db->escape($id)}'";
+            $sql = "UPDATE users SET name ='{$name}', username ='{$username}',user_level='{$level}',agency_id='{$agency_id}' ,status='{$status}' WHERE id='{$db->escape($id)}'";
          $result = $db->query($sql);
           if($result && $db->affected_rows() === 1){
             $session->msg('s',"Acount Updated ");
@@ -84,6 +86,14 @@ if(isset($_POST['update-pass'])) {
             <div class="form-group">
                   <label for="username" class="control-label">Username</label>
                   <input type="text" class="form-control" name="username" value="<?php echo remove_junk(ucwords($e_user['username'])); ?>">
+            </div>
+            <div class="form-group">
+              <label for="agency_id">Agency/Directorate</label>
+                <select class="form-control" name="agency_id">
+                  <?php foreach ($groups as $group ):?>
+                   <option <?php if($group['group_level'] === $e_user['user_level']) echo 'selected="selected"';?> value="<?php echo $group['group_level'];?>"><?php echo ucwords($group['group_name']);?></option>
+                <?php endforeach;?>
+                </select>
             </div>
             <div class="form-group">
               <label for="level">User Role</label>

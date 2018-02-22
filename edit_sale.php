@@ -89,7 +89,7 @@ if(!$sale){
                   <input type="text" class="form-control" name="total" value="<?php echo remove_junk($sale['price']); ?>">
                 </td>
                 <td id="s_date">
-                  <input type="date" class="form-control datepicker" name="date" data-date-format="" value="<?php echo remove_junk($sale['date']); ?>">
+                  <input type="date" class="form-control" name="date" data-date-format="" value="<?php echo remove_junk($sale['date']); ?>">
                 </td>
                 <td>
                   <button type="submit" name="update_sale" class="btn btn-primary">Update sale</button>

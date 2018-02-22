@@ -45,6 +45,10 @@ public function db_disconnect()
 public function query($sql)
    {
 
+    mysqli_query ($this->con, "set character_set_client='utf8'"); 
+    mysqli_query ($this->con, "set character_set_results='utf8'"); 
+    mysqli_query ($this->con, "set collation_connection='utf8_general_ci'"); 
+
       if (trim($sql != "")) {
           $this->query_id = $this->con->query($sql);
       }
