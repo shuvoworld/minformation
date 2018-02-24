@@ -1,27 +1,33 @@
 <?php
-$page_title = 'Sales Report';
-$results = '';
+$page_title = 'কার্যক্রম সংক্রান্ত তথ্যাদির প্রতিবেদন ছক';
+$project_results = '';
   require_once('includes/load.php');
   // Checkin What level user has permission to view this page
-   page_require_level(3);
+   page_require_level(2);
 ?>
 <?php
   if(isset($_POST['submit'])){
-    $req_dates = array('month_id','year_id');
+    $req_dates = array('month_id','year_id', 'agency_id');
     validate_fields($req_dates);
 
     if(empty($errors)):
-      $start_date   = remove_junk($db->escape($_POST['start-date']));
-      $end_date     = remove_junk($db->escape($_POST['end-date']));
-      $results      = find_sale_by_dates($start_date,$end_date);
+      $month_id   = remove_junk($db->escape($_POST['month_id']));
+      $month = find_by_id('months', $month_id);
+      $year_id     = remove_junk($db->escape($_POST['year_id']));
+      $year = find_by_id('years', $year_id);
+      $agency_id     = remove_junk($db->escape($_POST['agency_id']));
+      $agency = find_by_id('agencies',  $agency_id);
+      $project_results      = find_projects_by_dates($month_id,$year_id,$agency_id);
+      $training_results      = find_trainings_by_dates($month_id,$year_id,$agency_id);
+      $other_results      = find_other_programs_by_dates($month_id,$year_id,$agency_id);
     else:
       $session->msg("d", $errors);
-      redirect('sales_report.php', false);
+      redirect('report.php', false);
     endif;
 
   } else {
     $session->msg("d", "Select dates");
-    redirect('sales_report.php', false);
+    redirect('report.php', false);
   }
 ?>
 <!doctype html>
@@ -63,6 +69,7 @@ $results = '';
        border: 1px solid #ededed;
      }table tbody tr td{
        vertical-align: middle;
+       white-space: normal !important;
      }.sale-head,table.table thead tr th,table tbody tr td,table tfoot tr td{
        border: 1px solid #212121;
        white-space: nowrap;
@@ -74,61 +81,134 @@ $results = '';
        font-weight: 500;
      }
    </style>
+   <link rel="stylesheet" type="text/css" media="print" href="libs/css/print.css" />
 </head>
 <body>
-  <?php if($results): ?>
-    <div class="page-break">
-       <div class="sale-head pull-right">
-           <h1>Sales Report</h1>
-           <strong><?php if(isset($start_date)){ echo $start_date;}?> To <?php if(isset($end_date)){echo $end_date;}?> </strong>
+
+    <div class="page-break">   
+    <!-- <button onclick="myFunction()" class="btn btn-info pull left printButtonClass" style="margin: 10px 0 0 5px;">Print this page</button> -->
+       <div class="sale-head">           
+           <h3>মহিলা ও শিশু বিষয়ক মন্ত্রনালয়ের কার্যক্রম সংক্রান্ত তথ্যাদির প্রতিবেদন ছক</h3>           
+           <strong>প্রতিবেদনাধীন মাসঃ <?php if(isset($month_id)){ echo $month['name_BN'];}?>,<?php if(isset($year_id)){echo $year['name_BN'];}?> </strong>
+           <strong>দপ্তর/সংস্থাঃ <?php echo $agency['name_BN']?></strong>
        </div>
-      <table class="table table-border">
+       <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px; text-align: center">প্রকল্প/কর্মসূচী/কার্যক্রম</div>
+    <?php $i = 1;?>
+      <table class="table table-border" >
         <thead>
           <tr>
-              <th>Date</th>
-              <th>Product Title</th>
-              <th>Buying Price</th>
-              <th>Selling Price</th>
-              <th>Total Qty</th>
-              <th>TOTAL</th>
+              <th>ক্রমিক নং</th>
+              <th>ধরন</th>
+              <th>নাম</th>
+              <th>প্রকল্প পরিচালক</th>
+              <th>উপকারভোগীর সংখ্যা</th>
+              <th>মন্তব্য</th>
           </tr>
         </thead>
         <tbody>
-          <?php foreach($results as $result): ?>
-           <tr>
-              <td class=""><?php echo remove_junk($result['date']);?></td>
-              <td class="desc">
-                <h6><?php echo remove_junk(ucfirst($result['name']));?></h6>
-              </td>
-              <td class="text-right"><?php echo remove_junk($result['buy_price']);?></td>
-              <td class="text-right"><?php echo remove_junk($result['sale_price']);?></td>
-              <td class="text-right"><?php echo remove_junk($result['total_sales']);?></td>
-              <td class="text-right"><?php echo remove_junk($result['total_saleing_price']);?></td>
+        <?php if($project_results): ?>
+          <?php foreach($project_results as $result): ?>
+           <tr style="font-size:12px;">
+             <td class="text-center"><?php echo convertEnglishDigitToBengali($i); ?></td>
+             <td class="text-center"><?php echo remove_junk($result['type_BN']);?></td>
+              <td class="text-left"><?php echo remove_junk($result['project_name']);?></td>
+              <td class="text-center"><?php echo remove_junk($result['project_director_name']);?></td>
+              <td class="text-center"><?php echo convertEnglishDigitToBengali($result['beneficiaries']);?></td>
+              <td class="text-left"><?php echo remove_junk($result['note']);?></td>
           </tr>
-        <?php endforeach; ?>
-        </tbody>
-        <tfoot>
-         <tr class="text-right">
-           <td colspan="4"></td>
-           <td colspan="1">Grand Total</td>
-           <td> $
-           <?php echo number_format(total_price($results)[0], 2);?>
-          </td>
-         </tr>
-         <tr class="text-right">
-           <td colspan="4"></td>
-           <td colspan="1">Profit</td>
-           <td> $<?php echo number_format(total_price($results)[1], 2);?></td>
-         </tr>
-        </tfoot>
-      </table>
-    </div>
-  <?php
+        <?php $i++ ; endforeach; ?>
+        <?php
     else:
-        $session->msg("d", "Sorry no sales has been found. ");
-        redirect('sales_report.php', false);
+    ?>
+    <tr style="font-size:14px;">
+             <td class="text-center" colspan=6 style="color: red"><?php echo "তথ্য খুঁজে পাওয়া যাইনি" ?></td>           
+    </tr>
+    <?php
      endif;
-  ?>
+    ?>
+    </tbody>
+  </table>
+  
+  
+  <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px; text-align: center">প্রশিক্ষণ</div>
+  
+  <table class="table table-border">
+        
+        <thead>
+          <tr>
+          <th>নাম</th>
+          <th>উপকারভোগীর সংখ্যা</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+        <?php if($training_results): ?>
+           <tr style="font-size:12px;">
+             <td>উন্নয়ন প্রকল্পের আওতায়</td><td class="text-center"><?php echo convertEnglishDigitToBengali($training_results[0]['training_development']);?></td>           
+          </tr>
+          <tr style="font-size:12px;">
+             <td>কর্মসূচীর আওতায়</td><td class="text-center"><?php echo convertEnglishDigitToBengali($training_results[0]['training_program']);?></td>           
+          </tr>
+          <tr style="font-size:12px;">
+             <td>রাজস্ব বাজেটের আওতায়</td><td class="text-center"><?php echo convertEnglishDigitToBengali($training_results[0]['training_revenue_budget']);?></td>           
+          </tr>
+          <tr style="font-size:12px;">
+             <td>কর্মকর্তা/কর্মচারী</td><td class="text-center"><?php echo convertEnglishDigitToBengali($training_results[0]['training_staff']);?></td>           
+          </tr>
+
+        <?php
+          else:
+        ?>
+      <tr style="font-size:14px;">
+             <td class="text-center" colspan=2 style="color: red"><?php echo "তথ্য খুঁজে পাওয়া যাইনি" ?></td>           
+      </tr>
+      <?php
+        endif;
+      ?>
+    </tbody>
+  </table>
+  
+  
+  <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px; text-align: center">অন্যান্য কার্যক্রম</div>
+  <?php $i = 1;?>
+      <table class="table table-border">
+        <thead>
+          <tr>
+              <th>ক্রমিক নং</th>
+              <th>নাম</th>
+              <th>উপকারভোগীর সংখ্যা</th>
+              <th>মন্তব্য</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php if($other_results): ?>
+          <?php foreach($other_results as $other): ?>
+           <tr style="font-size:12px;">
+           <td class="text-center"><?php echo convertEnglishDigitToBengali($i); ?></td>
+             <td class="text-center"><?php echo remove_junk($other['other_name']);?></td>
+             <td class="text-center"><?php echo remove_junk($other['beneficiaries']);?></td>
+              <td class="text-left"><?php echo remove_junk($other['note']);?></td>
+          </tr>
+        <?php $i++ ; endforeach; ?>
+        <?php
+    else:
+    ?>
+    <tr style="font-size:14px;">
+             <td class="text-center" colspan=6><?php echo "তথ্য খুঁজে পাওয়া যাইনি" ?></td>           
+    </tr>
+    <?php
+     endif;
+    ?>
+    </tbody>
+  </table>
+
+</div>
+
+  <script>
+function myFunction() {
+    window.print();
+}
+</script>
 </body>
 </html>
 <?php if(isset($db)) { $db->db_disconnect(); } ?>

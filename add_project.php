@@ -55,7 +55,7 @@ $errmsg  = '';
      $query  = "INSERT INTO projects (";
      $query .=" name,name_BN,type_id,type_BN,main_type_id, main_type_BN,agency_id,agency_name,partner_id,partner_name,project_director_name, project_director_designation, project_director_phone_no, project_director_email, start_month_id, end_month_id, start_year_id, end_year_id,start_month_name, end_month_name, start_year_name, end_year_name, is_active";
      $query .=") VALUES (";
-     $query .=" '{$name}', '{$name_BN}', '{$type_id}','{$type['name_BN']}', '{$main_type_id}','{$maintype['name_BN']}', '{$agency_id}','{$agency['name_BN']}','{$partner_id}','{$partner['name_BN']}','{$project_director_name}', '{$project_director_designation}', '{$project_director_phone_no}', '{$project_director_email}', '{$start_month_id}', '{$end_month_id}', '{$start_year_id}', '{$end_year_id}',  '{$start_month['name_BN']}', '{$end_month['name_BN']}', '{$start_year['name_BN']}', '{$end_year['name']}', 1";
+     $query .=" '{$name}', '{$name_BN}', '{$type_id}','{$type['name_BN']}', '{$main_type_id}','{$maintype['name_BN']}', '{$agency_id}','{$agency['name_BN']}','{$partner_id}','{$partner['name_BN']}','{$project_director_name}', '{$project_director_designation}', '{$project_director_phone_no}', '{$project_director_email}', '{$start_month_id}', '{$end_month_id}', '{$start_year_id}', '{$end_year_id}',  '{$start_month['name_BN']}', '{$end_month['name_BN']}', '{$start_year['name_BN']}', '{$end_year['name_BN']}', 1";
      $query .=")";
      if($db->query($query)){
        $session->msg('s',"Project added ");
@@ -134,7 +134,6 @@ $errmsg  = '';
                <div class="row">
                   <div class="col-md-4">
                 <label for="partner_id">বাস্তবায়নকারী কতৃপক্ষ</label>
-                <option value="">নির্বাচন করুন</option>
                 <select class="form-control" name="partner_id">
                   <?php foreach ($partners as $partner ):?>
                    <option value="<?php echo $partner['id'];?>"><?php echo $partner['name_BN'];?></option>
@@ -247,3 +246,16 @@ $errmsg  = '';
 
 
 <?php include_once('layouts/footer.php'); ?>
+
+<script type="text/javascript">
+$(document).ready(function() {
+        $('[name="agency_id"]').select2();
+        $('[name="partner_id"]').select2();
+        $('[name="main_type_id"]').select2();
+        $('[name="type_id"]').select2();
+        $('[name="start_month_id"]').select2();
+        $('[name="start_year_id"]').select2();
+        $('[name="end_month_id"]').select2();
+        $('[name="end_year_id"]').select2();
+});
+</script>

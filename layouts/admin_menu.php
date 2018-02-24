@@ -23,6 +23,13 @@
     </a>
   </li>
   <li>
+  <li>
+    <a href="partner.php">
+      <i class="glyphicon glyphicon-home"></i>
+      <span>বাস্তবায়নকারী সংস্থা</span>
+    </a>
+  </li>
+  <li>
 
   <li>
     <a href="#" class="submenu-toggle">
@@ -31,6 +38,7 @@
     </a>
     <ul class="nav submenu">
       <li><a href="projectreports.php">প্রকল্প/কর্মসুচি/কার্জক্রম</a> </li>
+      <li><a href="trainingreports.php">প্রশিক্ষণার্থী</a></li>
    </ul>
   </li>
 

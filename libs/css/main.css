@@ -3,7 +3,7 @@ body{
   font-weight: 400;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: #FFFFFF;
+  background-image: url("../../layouts/images/bf.png");
   height: 100%;
   width: 100%;
 }a{
@@ -14,9 +14,7 @@ body{
 }.login-page{
   width: 400px;
   padding: 10px 20px;
-  background-color: rgba(82, 191, 218, 0.808);
-  border: 5px solid #92EAE2;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   color: #35404d;
 }.login-page .text-center{
   margin-bottom: 10px;

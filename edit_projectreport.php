@@ -161,7 +161,7 @@ if($error == false){
           </div>
           </div>
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <div class="row">
                <div class="col-md-4">
                 <label for="project_id">ইহা কি প্রশিক্ষণ প্রকল্প/কর্মসুচি/কার্যক্রম?</label>
@@ -179,12 +179,12 @@ if($error == false){
                 </select>
             </div>
           </div>
-        </div>
+        </div> -->
 
           <div class="form-group">
                <div class="row">
                <div class="col-md-4">
-                <label for="other_name">অন্যান্য কার্যক্রম</label>
+                <label for="other_name">(অথবা)অন্যান্য কার্যক্রম</label>
                 <input type="text" class="form-control"  name="other_name" value="<?php echo remove_junk($project_report['other_name']); ?>">
             </div>
           </div>
@@ -225,7 +225,17 @@ if($error == false){
       </div>
     </div>
   </div>
-  <script>
-			CKEDITOR.replace( 'note' );
-		</script>
+
 <?php include_once('layouts/footer.php'); ?>
+
+  <script type="text/javascript">
+			// CKEDITOR.replace( 'note' );
+      $(document).ready(function() {
+        $('[name="agency_id"]').select2();
+        $('[name="partner_id"]').select2();
+        $('[name="project_id"]').select2();
+        $('[name="month_id"]').select2();
+        $('[name="year_id"]').select2();
+});
+		</script>
+

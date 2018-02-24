@@ -1,9 +1,8 @@
 <?php
-  $page_title = 'All Projects';
+  $page_title = 'বাস্তবায়নকারী সংস্থা';
   require_once('includes/load.php');
   // Checkin What level user has permission to view this page
    page_require_level(1);
-  $products = join_product_table();
 ?>
 <?php include_once('layouts/header.php'); ?>
   <div class="row">
@@ -14,20 +13,15 @@
       <div class="panel panel-default">
         <div class="panel-heading clearfix">
          <div class="pull-right">
-           <a href="add_project.php" class="btn btn-primary">Add New</a>
+           <a href="add_partner.php" class="btn btn-primary">যোগ করুন</a>
          </div>
         </div>
         <div class="panel-body">
-          <table class="table table-bordered" id="project">
+          <table class="table table-bordered" id="partner">
             <thead>
               <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">Name</th>
-                <th class="text-center">Revenue/Development</th>
-                <th class="text-center">Project/Program</th>
-                <th class="text-center">Agency</th>
-                <th class="text-center">Start Date</th>
-                <th class="text-center">End Date</th>
+                <th class="text-center">#</th>
+                <th class="text-center">নাম</th>
                 <th class="text-center">Action</th>
               </tr>
             </thead>
@@ -40,16 +34,16 @@
   <script type="text/javascript">
       $(document).ready(function() {
 
-      $('#project').dataTable({
+      $('#partner').dataTable({
         "bProcessing": true,
-        "sAjaxSource": "ajax/projects.php",
+        "sAjaxSource": "ajax/partners.php",
         "deferRender": true,
 
     "columnDefs": [ 
         {
-            "targets": 7,
+            "targets": 2,
             "render": function ( data, type, row, meta ) {
-                return '<a href="edit_project.php?id= '+ row.id + '"><span class="glyphicon glyphicon-pencil"></span></a> | <a style="color:red" href="delete_project.php?id= '+ row.id + '"><span class="glyphicon glyphicon-remove"></span></a>';
+                return '<a href="edit_partner.php?id= '+ row.id + '"><span class="glyphicon glyphicon-pencil"></span></a> | <a style="color:red" href="delete_partner.php?id= '+ row.id + '"><span class="glyphicon glyphicon-remove"></span></a>';
             }
         },
         { targets: 1, searchable: true },
@@ -57,12 +51,7 @@
     ],
           "aoColumns": [
               { mData: 'id' } ,
-              { mData: 'name' },
-              { mData: 'type' },
-              { mData: 'main_type' },
-              { mData: 'agency_id' },
-              { mData: 'start_date' },
-              { mData: 'end_date' }
+              { mData: 'name_BN' }
             ]
           });  
     });

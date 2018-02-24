@@ -5,6 +5,7 @@ $page_title = 'মাসিক ছকে রিপোর্ট';
    page_require_level(2);
    $months = find_all('months');
    $years = find_all('years');
+   $agencies = find_all('agencies');
 ?>
 <?php include_once('layouts/header.php'); ?>
 <div class="row">
@@ -19,7 +20,7 @@ $page_title = 'মাসিক ছকে রিপোর্ট';
 
       </div>
       <div class="panel-body">
-          <form class="clearfix" method="post" action="report_process.php">
+          <form class="clearfix" method="post" action="report_process.php" target="_blank">
             <div class="form-group">
                <div class="row">
                   <div class="col-md-4">
@@ -41,6 +42,16 @@ $page_title = 'মাসিক ছকে রিপোর্ট';
                       <?php endforeach;?>
                     </select>
                 </div>
+                <div class="col-md-4">
+                    <label for="year_id">মন্ত্রণালয়/দপ্তর/সংস্থা *</label>
+                    <select class="form-control" name="agency_id">
+                    <option value="">নির্বাচন করুন</option>
+                      <?php foreach ($agencies as $agency ):?>
+                        <option value="<?php echo $agency['id'];?>"><?php echo $agency['name_BN'];?></option>
+                      <?php endforeach;?>
+                    </select>
+                </div>
+
               </div>
               </div>
             <div class="form-group">

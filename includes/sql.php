@@ -291,16 +291,54 @@ function tableExists($table){
    return find_by_sql($sql);
  }
  /*--------------------------------------------------------------*/
- /* Function for Display Recent sale
+ /* Function for Display Project
  /*--------------------------------------------------------------*/
-function find_recent_sale_added($limit){
+
+function find_projects_by_dates($month,$year,$agency){
   global $db;
-  $sql  = "SELECT s.id,s.qty,s.price,s.date,p.name";
-  $sql .= " FROM sales s";
-  $sql .= " LEFT JOIN products p ON s.product_id = p.id";
-  $sql .= " ORDER BY s.date DESC LIMIT ".$db->escape((int)$limit);
+  $sql  = "SELECT pr.project_name as project_name,
+                  pr.month_name as month_name,
+                  pr.year_name as year_name,
+                  pr.beneficiaries as beneficiaries,
+                  pr.note as note,
+                  p.type_BN as type_BN,
+                  p.project_director_name as project_director_name,
+                  p.project_director_designation as project_director_designation,
+                  p.project_director_phone_no as project_director_phone_no,
+                  p.start_month_name as start_month_name,
+                  p.end_month_name as end_month_name,
+                  p.start_year_name as start_year_name,
+                  p.end_year_name as end_year_name
+   FROM project_reports as pr LEFT JOIN projects as p ON pr.project_id = p.id WHERE pr.project_id IS NOT NULL AND pr.month_id=".$month." AND pr.year_id=".$year." AND pr.agency_id=". $agency;
   return find_by_sql($sql);
 }
+ 
+/*--------------------------------------------------------------*/
+ /* Function for Display Training Update
+
+ /*--------------------------------------------------------------*/
+function find_trainings_by_dates($month,$year,$agency){
+  global $db;
+  $sql  = "SELECT training_development,training_program,training_revenue_budget,training_staff,note FROM training_reports WHERE month_id=".$month." AND year_id=".$year." AND agency_id=". $agency;
+  return find_by_sql($sql);
+}
+
+/*--------------------------------------------------------------*/
+ /* Function for Display Other Update
+
+ /*--------------------------------------------------------------*/
+
+function find_other_programs_by_dates($month,$year,$agency){
+  global $db;
+  $sql  = "SELECT pr.other_name as other_name,
+                  pr.month_name as month_name,
+                  pr.year_name as year_name,
+                  pr.beneficiaries as beneficiaries,
+                  pr.note as note
+   FROM project_reports as pr  WHERE pr.project_id IS NULL AND pr.month_id=".$month." AND pr.year_id=".$year." AND pr.agency_id=". $agency;
+  return find_by_sql($sql);
+}
+
 /*--------------------------------------------------------------*/
 /* Function for Generate sales report by two dates
 /*--------------------------------------------------------------*/

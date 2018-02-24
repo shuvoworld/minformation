@@ -191,6 +191,11 @@ $errmsg  = '';
  
 <?php include_once('layouts/footer.php'); ?>
 
-  <script type="text/javascript">
+ <script type="text/javascript">
 			CKEDITOR.replace( 'note' );
+      $(document).ready(function() {
+          $('[name="agency_id"]').select2();
+          $('[name="month_id"]').select2();
+          $('[name="year_id"]').select2();
+});
   </script>

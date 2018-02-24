@@ -90,8 +90,8 @@ if(isset($_POST['update-pass'])) {
             <div class="form-group">
               <label for="agency_id">Agency/Directorate</label>
                 <select class="form-control" name="agency_id">
-                  <?php foreach ($groups as $group ):?>
-                   <option <?php if($group['group_level'] === $e_user['user_level']) echo 'selected="selected"';?> value="<?php echo $group['group_level'];?>"><?php echo ucwords($group['group_name']);?></option>
+                  <?php foreach ($agencies as $agency ):?>
+                   <option <?php if($agency['id'] === $e_user['agency_id']) echo 'selected="selected"';?> value="<?php echo $agency['id'];?>"><?php echo $agency['name_BN'];?></option>
                 <?php endforeach;?>
                 </select>
             </div>

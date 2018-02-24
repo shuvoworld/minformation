@@ -34,7 +34,7 @@ function validate_fields($var){
   foreach ($var as $field) {
     $val = remove_junk($_POST[$field]);
     if(isset($val) && $val==''){
-      $errors = $field ." can't be blank.";
+      $errors = $field ." পূরণ করুন";
       return $errors;
     }
   }
@@ -117,5 +117,11 @@ function randString($length = 5)
   return $str;
 }
 
+function convertEnglishDigitToBengali($input = '')
+{
+    $bn_digits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    $output = str_replace(range(0, 9), $bn_digits, $input);
 
+    return $output;
+}
 ?>

@@ -72,10 +72,10 @@ $errmsg  = '';
                    end_month_id ='{$end_month_id}',
                    start_year_id ='{$start_year_id}',
                    start_year_id ='{$start_year_id}',
-                   start_month_name ='{$start_month['name']}',
-                   end_month_name ='{$end_month['name']}',
-                   start_year_name ='{$start_year['name']}',
-                   end_year_name ='{$end_year['name']}'
+                   start_month_name ='{$start_month['name_BN']}',
+                   end_month_name ='{$end_month['name_BN']}',
+                   start_year_name ='{$start_year['name_BN']}',
+                   end_year_name ='{$end_year['name_BN']}'
                    ";
 
        $query  .=" WHERE id = ". (int)$_GET['id'];
@@ -224,7 +224,7 @@ $errmsg  = '';
                  <div class="col-md-4">  
                  <select class="form-control" name="end_month_id">
                     <option value="">শেষ হওয়ার মাস নির্বাচন করুন</option>
-                    <?php foreach ($agencies as $agency ):?>
+                    <?php foreach ($months as $month ):?>
                     <option value="<?php echo (int)$month['id']; ?>" <?php if($project['end_month_id'] === $month['id']): echo "selected"; endif; ?> >
                        <?php echo remove_junk($month['name_BN']); ?></option>
                 <?php endforeach;?>
@@ -278,3 +278,16 @@ $errmsg  = '';
 
 
 <?php include_once('layouts/footer.php'); ?>
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        $('[name="agency_id"]').select2();
+        $('[name="partner_id"]').select2();
+        $('[name="main_type_id"]').select2();
+        $('[name="type_id"]').select2();
+        $('[name="start_month_id"]').select2();
+        $('[name="start_year_id"]').select2();
+        $('[name="end_month_id"]').select2();
+        $('[name="end_year_id"]').select2();
+});
+  </script>
