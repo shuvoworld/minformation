@@ -41,7 +41,7 @@
      $beneficiaries = (int)$db->escape($_POST['beneficiaries']);
      $is_training = (int)$db->escape($_POST['is_training']);
      $implementing_body  = remove_junk($db->escape($_POST['implementing_body']));
-     $note  = remove_junk($db->escape($_POST['note']));
+     $note  = $db->escape($_POST['note']);
     
      $query  = "INSERT INTO project_reports (";
      $query .=" agency_id,agency_name,month_id,month_name,year_id,year_name, project_id, project_name,other_name,is_training,implementing_body, beneficiaries, note, is_active, created_at";
@@ -193,7 +193,7 @@
                <div class="row">
                <div class="col-md-12">
                 <label for="note">মন্তব্য</label>
-                <input type="text" class="form-control"  name="note">
+                <textarea name="note" class="form-control"></textarea>
             </div>
           </div>
           </div>
@@ -208,7 +208,7 @@
   
 <?php include_once('layouts/footer.php'); ?>
   <script type="text/javascript">
-			// CKEDITOR.replace( 'note' );
+			CKEDITOR.replace( 'note' );
       $(document).ready(function() {
           $('#agency_id,#month_id,#year_id,#project_id').select2();
 });

@@ -67,7 +67,7 @@ if($error == false){
                  $session->msg('s',"প্রকল্পের তথ্য আপডেট করা হয়েছে");
                  redirect('projectreports.php', false);
                } else {
-                 $session->msg('d',' Sorry failed to update!');
+                 $session->msg('d', $_POST['note']);
                  redirect('edit_projectreport.php?id='.$project_report['id'], false);
                }
 
@@ -213,7 +213,7 @@ if($error == false){
                <div class="row">
                <div class="col-md-12">
                 <label for="note">মন্তব্য</label>
-                <input type="textarea" name="note" class="form-control"  value="<?php echo remove_junk($project_report['note']); ?>">
+                <textarea name="note" class="form-control"><?php echo remove_junk($project_report['note']); ?></textarea>
             </div>
           </div>
           </div>
@@ -229,7 +229,7 @@ if($error == false){
 <?php include_once('layouts/footer.php'); ?>
 
   <script type="text/javascript">
-			// CKEDITOR.replace( 'note' );
+			CKEDITOR.replace( 'note' );
       $(document).ready(function() {
         $('[name="agency_id"]').select2();
         $('[name="partner_id"]').select2();
