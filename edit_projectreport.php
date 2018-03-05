@@ -109,7 +109,7 @@ if($error == false){
               <div class="form-group">
                 <div class="row">
                   <div class="col-md-6">
-                  <label for="month_id">প্রতিবেদনাধিন সংস্থা</label>
+                  <label for="agency_id">প্রতিবেদনাধিন সংস্থা</label>
                     <select class="form-control" name="agency_id">
                     <option value="">Select</option>
                    <?php  foreach ($all_agencies as $agency): ?>

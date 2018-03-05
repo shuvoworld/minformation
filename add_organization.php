@@ -36,29 +36,41 @@ if (isset($_POST['add_organization'])) {
         }
 
         $agency = find_by_id('agencies', $agency_id);
-        $month_id = remove_junk($db->escape($_POST['month_id']));
-        $month = find_by_id('months', $month_id);
-        $year_id = remove_junk($db->escape($_POST['year_id']));
-        $year = find_by_id('years', $year_id);
-        $project_id = remove_junk($db->escape($_POST['project_id']));
-        $project = find_by_id('projects', $project_id);
-        $other_name = remove_junk($db->escape($_POST['other_name']));
-        $beneficiaries = (int) $db->escape($_POST['beneficiaries']);
-        $is_training = (int) $db->escape($_POST['is_training']);
-        $implementing_body = remove_junk($db->escape($_POST['implementing_body']));
-        $note = $db->escape($_POST['note']);
+        $name = remove_junk($db->escape($_POST['name']));
+        $name_BN = remove_junk($db->escape($_POST['name_BN']));
+        $organization_type_id = $_POST['organization_type_id'];
+        $organization_type = find_by_id('organization_types', $organization_type_id);
+        $organization_level_id = (int)($db->escape($_POST['organization_level_id']));
+        $organization_level = find_by_id('organization_levels', $organization_level_id);
+        $organization_head_name = remove_junk($db->escape($_POST['organization_head_name']));
+        $organization_head_designation = remove_junk($db->escape($_POST['organization_head_designation']));
+        $organization_head_phone = remove_junk($db->escape($_POST['organization_head_phone']));
+        $organization_head_email = remove_junk($db->escape($_POST['organization_head_email']));
+        $address = remove_junk($db->escape($_POST['address']));
+        $division_id = (int)($db->escape($_POST['division_id']));
+        $division = find_by_id('divisions', $division_id);
+        $district_id = (int)($db->escape($_POST['district_id']));
+        $district = find_by_id('districts', $district_id);
+        $upazila_id = (int)($db->escape($_POST['upazila_id']));
+        $upazila = find_by_id('upazilas', $upazila_id);
+        $contact_no = remove_junk($db->escape($_POST['contact_no']));
+        $web_url = remove_junk($db->escape($_POST['web_url']));
+        $facebook_url = remove_junk($db->escape($_POST['facebook_url']));
+        $contact_email = remove_junk($db->escape($_POST['contact_email']));
 
-        $query = "INSERT INTO project_reports (";
-        $query .= " agency_id,agency_name,month_id,month_name,year_id,year_name, project_id, project_name,other_name,is_training,implementing_body, beneficiaries, note, is_active, created_at";
+        $query = "INSERT INTO organizations (";
+        $query .= " name, name_BN, agency_id, agency_name, organization_type_id, organization_type_name, organization_level_id, organization_level_name, organization_head_name, organization_head_designation, organization_head_phone,
+        organization_head_email, address, division_id, division_name, district_id, district_name, upazila_id, upazila_name, contact_no, web_url, facebook_url, contact_email,latitude,longitude,online_id,online_id_type, is_active, created_at";
         $query .= ") VALUES (";
-        $query .= " '{$agency_id}', '{$agency['name_BN']}','{$month_id}','{$month['name_BN']}','{$year_id}', '{$year['name_BN']}','{$project_id}','{$project['name']}','{$other_name}', '{$is_training}','{$implementing_body}', '{$beneficiaries}', '{$note}', 1, now()";
+        $query .= " '{$name}', '{$name_BN}', '{$agency_id}', '{$agency['name_BN']}','{$organization_type_id}', '{$organization_type['name_BN']}', '{$organization_level_id}', '{$organization_level['name_BN']}', '{$organization_head_name}','{$organization_head_designation}', '{$organization_head_phone}',
+        '{$organization_head_email}', '{$address}', '{$division_id}', '{$division['name_BN']}', '{$district_id}', '{$district['name_BN']}', '{$upazila_id}', '{$upazila['name_BN']}', '{$contact_no}', '{$web_url}', '{$facebook_url}', '{$contact_email}', '{$latitude}', '{$longitude}', '{$online_id}', '{$online_id_type}', 1, now()";
         $query .= ")";
         if ($db->query($query)) {
             $session->msg('s', "প্রকল্পের তথ্য যোগ করা হয়েছে ");
-            redirect('projectreports.php', false);
+            redirect('organizations.php', false);
         } else {
             $session->msg('d', ' Sorry failed to added!');
-            redirect('add_project_report.php', false);
+            redirect('add_organization.php', false);
         }
 
     } else {
@@ -102,7 +114,7 @@ echo $errmsg;
             <div class="form-group">
                <div class="row">
                 <div class="col-md-4">
-                <label for="agency_id">প্রতিবেদনাধিন সংস্থা</label>
+                <label for="agency_id">সংস্থা</label>
                 <select class="form-control" name="agency_id" id="agency_id">
                 <option value="">নির্বাচন করুন</option>
                   <?php foreach ($agencies as $agency): ?>
@@ -133,7 +145,7 @@ echo $errmsg;
             <div class="form-group">
                <div class="row">
                   <div class="col-md-4">
-                <label for="month_id">প্রতিষ্ঠানের ধরন/ক্যাটাগরী</label>
+                <label for="organization_type_id">প্রতিষ্ঠানের ধরন/ক্যাটাগরী</label>
                 <select class="form-control" name="organization_type_id" id="organization_type_id">
                 <option value="">নির্বাচন করুন</option>
                   <?php foreach ($organization_types as $organization_type): ?>
@@ -143,7 +155,7 @@ echo $errmsg;
                 </div>
 
                   <div class="col-md-4">
-                    <label for="year_id">প্রতিষ্ঠানটি'র লেভেল</label>
+                    <label for="organization_level_id">প্রতিষ্ঠানটি'র লেভেল</label>
                     <select class="form-control" name="organization_level_id" id="organization_level_id">
                     <option value="">নির্বাচন করুন</option>
                       <?php foreach ($organization_levels as $organization_level): ?>
@@ -154,10 +166,13 @@ echo $errmsg;
               </div>
               </div>
 
+           
+            <fieldset>
+            <legend>প্রতিষ্ঠানের জিও লোকেশন</legend>
             <div class="form-group">
                <div class="row">
                <div class="col-md-2">
-                <label for="project_id">বিভাগ</label>
+                <label for="division_id">বিভাগ</label>
                 <select class="form-control" name="division_id" id="division_id">
                 <option value="">নির্বাচন করুন</option>
                   <?php foreach ($divisions as $division): ?>
@@ -166,7 +181,7 @@ echo $errmsg;
                 </select>
             </div>
             <div class="col-md-2">
-                <label for="project_id">জেলা</label>
+                <label for="district_id">জেলা</label>
                 <select class="form-control" name="district_id" id="district_id">
                 <option value="">নির্বাচন করুন</option>
                   <?php foreach ($districts as $district): ?>
@@ -175,7 +190,7 @@ echo $errmsg;
                 </select>
             </div>
             <div class="col-md-2">
-                <label for="project_id">উপজেলা</label>
+                <label for="upazila_id">উপজেলা</label>
                 <select class="form-control" name="upazila_id" id="upazila_id">
                 <option value="">নির্বাচন করুন</option>
                   <?php foreach ($upazilas as $upazila): ?>
@@ -186,34 +201,99 @@ echo $errmsg;
 
             </div>
             </div>
+            <div class="form-group">
+               <div class="row">
+                <div class="col-md-2">      
+                     <input type="text" class="form-control" name="latitude" placeholder="Latitude">                  
+                 </div>
+                 <div class="col-md-2">
+                     <input type="text" class="form-control" name="longitude" placeholder="Longitude">                  
+                 </div>
+                 </div>
+                 </div>
+                 </fieldset>
+            
 
-           
+            <fieldset>
+            <legend>প্রতিষ্ঠানের অনলাইন আইডি</legend>
+            <div class="form-group">
+               <div class="row">
+                <div class="col-md-2">  
+                <label for="online_id">অনলাইন আইডি</label>    
+                     <input type="text" class="form-control" name="online_id" value="<?php if(isset($_POST['online_id'])) echo $_POST['online_id']; ?>">                  
+                 </div>
+                 <div class="col-md-4">  
+                 <label for="online_id_type">আইডি'র সংশ্লিষ্ট প্ল্যাটফর্মঃ skype/imo/viber</label>    
+                     <input type="text" class="form-control" name="online_id_type" value="<?php if(isset($_POST['online_id_type'])) echo $_POST['online_id_type']; ?>">                  
+                 </div>
+                 <div class="col-md-2">  
+                 <label for="organization_head_name">ওয়েবসাইট</label>    
+                     <input type="text" class="form-control" name="web_url" value="<?php if(isset($_POST['organization_head_name'])) echo $_POST['organization_head_name']; ?>">                  
+                 </div>
+                 <div class="col-md-4"> 
+                 <label for="facebook_url">ফেসবুক পেজ</label>     
+                     <input type="text" class="form-control" name="facebook_url"  value="<?php if(isset($_POST['facebook_url'])) echo $_POST['facebook_url']; ?>">                  
+                 </div>
+                 </div>
+                 </div>
+
+                 <div class="form-group">
+               <div class="row">
+                 <div class="col-md-2"> 
+                 <label for="contact_no">যোগাযোগের নম্বর</label>     
+                     <input type="text" class="form-control" name="contact_no" value="<?php if(isset($_POST['contact_no'])) echo $_POST['contact_no']; ?>">                  
+                 </div>
+                 <div class="col-md-2">
+                 <label for="contact_email">ইমেইল</label>      
+                     <input type="text" class="form-control" name="contact_email" value="<?php if(isset($_POST['contact_email'])) echo $_POST['contact_email']; ?>">                  
+                 </div>
+                </div>
+            </div>
+            </fieldset>
+
+
               <fieldset>
                 <legend>প্রতিষ্ঠান প্রধানের তথ্য</legend>
               <div class="form-group">
                <div class="row">
-                 <div class="col-md-4">      
-                     <input type="text" class="form-control" name="organization_head_name" placeholder="নাম">                  
-                 </div>
                  <div class="col-md-4">
-                     <input type="text" class="form-control" name="organization_head_designation" placeholder="পদবী">                  
+                 <label for="organization_head_name">নাম</label>      
+                     <input type="text" class="form-control" name="organization_head_name" value="<?php if(isset($_POST['organization_head_name'])) echo $_POST['organization_head_name']; ?>">                  
                  </div>
-                  <div class="col-md-4">
-                      <input type="text" class="form-control" name="organization_head_phone_no" placeholder="মোবাইল">                
+                 <div class="col-md-2">
+                 <label for="organization_head_designation">পদবী</label>
+                     <input type="text" class="form-control" name="organization_head_designation" value="<?php if(isset($_POST['organization_head_designation'])) echo $_POST['organization_head_designation']; ?>">                  
+                 </div>
+                  <div class="col-md-2">
+                  <label for="organization_head_phone">মোবাইল</label>
+                      <input type="text" class="form-control" name="organization_head_phone">                
                   </div>                            
+                  <div class="col-md-2">
+                  <label for="organization_head_email">ইমেইল</label>
+              <input type="text" class="form-control" name="organization_head_email" value="<?php if(isset($_POST['organization_head_designation'])) echo $_POST['organization_head_designation']; ?>">  
+              </div>
                </div>
               </div>             
-          <div class="form-group">
-               <div class="row">
-              <div class="col-md-4">
-              <input type="text" class="form-control" name="organization_head_email" placeholder="ইমেইল">  
+        </fieldset>  
+        
+        
+        <div class="form-group">
+            <div class="row">
+              <div class="col-md-8">
+              <label for="address">ঠিকানা</label>
+              <textarea class="form-control" name="address"> <?php if(isset($_POST['address'])) echo $_POST['address']; ?> </textarea>
               </div>
-               </div>                 
-               </div>
-              </div>
-              </fieldset>  
+            </div>                 
+        </div>
 
+
+              <div class="form-group">
+              <div class="row">
+              <div class="col-md-4">
               <button type="submit" name="add_organization" class="btn btn-success">সাবমিট করুন</button>
+              </div>
+              </div>
+              </div>
           </form>
          </div>
         </div>
@@ -230,6 +310,8 @@ echo $errmsg;
         $('[name="district_id"]').select2();
         $('[name="upazila_id"]').select2();
         $('[name="organization_type_id"]').select2();
+        $('[name="organization_level_id"]').select2();
+        CKEDITOR.replace( 'address' );
 });
   </script>
 

@@ -41,7 +41,12 @@
       <li><a href="trainingreports.php">প্রশিক্ষণার্থী</a></li>
    </ul>
   </li>
-
+  <li>
+    <a href="organizations.php">
+      <i class="glyphicon glyphicon-home"></i>
+      <span>প্রতিষ্ঠান</span>
+    </a>
+  </li>
     <li>
     <a href="report.php">
       <i class="glyphicon glyphicon-home"></i>

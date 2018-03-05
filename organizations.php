@@ -13,7 +13,7 @@
       <div class="panel panel-default">
         <div class="panel-heading clearfix">
          <div class="pull-right">
-           <a href="add_project_report.php" class="btn btn-primary">নতুন যোগ করুন</a>
+           <a href="add_organization.php" class="btn btn-primary">নতুন যোগ করুন</a>
          </div>
         </div>
         <div class="panel-body">
